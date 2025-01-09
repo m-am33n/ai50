@@ -73,7 +73,7 @@ def winner(board):
 
 
 def terminal(board):
-    return actions(board) == set()
+    return actions(board) == set() or winner(board) is not None
 
 def utility(board):
     if winner(board) == X:
