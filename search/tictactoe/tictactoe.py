@@ -88,10 +88,10 @@ def max_value(board):
     v = -math.inf
     max_value_action = None
     for action in actions(board):
-        min_val, min_action = min_value(result(board, action))
+        min_val, _ = min_value(result(board, action))
         if min_val > v:
             v = min_val
-            max_value_action = min_action
+            max_value_action = action
         
     return v, max_value_action
 
@@ -101,10 +101,10 @@ def min_value(board):
     v = math.inf
     min_value_action = None
     for action in actions(board):
-        max_val, max_action = max_value(result(board, action))
+        max_val, _ = max_value(result(board, action))
         if max_val < v:
             v = max_val
-            min_value_action = max_action
+            min_value_action = action
     return v, min_value_action
 
 def minimax(board):
