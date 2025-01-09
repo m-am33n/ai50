@@ -82,26 +82,28 @@ def utility(board):
 
 def max_value(board):
     if terminal(board):
-        return utility(board)
+        return utility(board), None
     v = -math.inf
     max_value_action = None
     for action in actions(board):
-        if min_value(result(board, action)) > v:
-            v = min_value(result(board, action))
-            max_value_action = action
+        min_value, min_action = min_value(result(board, action))
+        if min_value > v:
+            v = min_value
+            max_value_action = min_action
         
-    return max_value_action
+    return v, max_value_action
 
 def min_value(board):
     if terminal(board):
-        return utility(board)
+        return utility(board), None
     v = math.inf
     min_value_action = None
     for action in actions(board):
-        if max_value(result(board, action)) < v:
-            v = max_value(result(board, action))
-            min_value_action = action
-    return min_value_action
+        max_value, max_action = max_value(result(board, action))
+        if max_value < v:
+            v = max_value
+            min_value_action = max_action
+    return v, min_value_action
 
 def minimax(board):
     if terminal(board):
