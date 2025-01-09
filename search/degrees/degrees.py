@@ -52,15 +52,39 @@ def load_data(directory):
                 pass
 
 
-#
-
 def main():
-    shortest_path
+    if len(sys.argv) > 2:
+        sys.exit("Usage: python degrees.py [directory]")
+    directory = sys.argv[1] if len(sys.argv) == 2 else "large"
+
+    # Load data from files into memory
+    print("Loading data...")
+    load_data(directory)
+    print("Data loaded.")
+
+    source = person_id_for_name(input("Name: "))
+    if source is None:
+        sys.exit("Person not found.")
+    target = person_id_for_name(input("Name: "))
+    if target is None:
+        sys.exit("Person not found.")
+
+    path = shortest_path(source, target)
+
+    if path is None:
+        print("Not connected.")
+    else:
+        degrees = len(path)
+        print(f"{degrees} degrees of separation.")
+        path = [(None, source)] + path
+        for i in range(degrees):
+            person1 = people[path[i][1]]["name"]
+            person2 = people[path[i + 1][1]]["name"]
+            movie = movies[path[i + 1][0]]["title"]
+            print(f"{i + 1}: {person1} and {person2} starred in {movie}")
 
 
 def shortest_path(source, target):
-    frontier = Frontier()
-
     """
     Returns the shortest list of (movie_id, person_id) pairs
     that connect the source to the target.
@@ -68,26 +92,37 @@ def shortest_path(source, target):
     If no possible path, returns None.
     """
     f = QueueFrontier()
-    f.add(Node(source, None, None))
-    
+    f.add(Node(state=source, parent=None, action=None))
+
+    visited = set()
+
+    if source == target:
+        return []
+
     while True:
         if f.empty():
             return None
-        
-        node = f.remove()
-        neighbors = neighbors_for_person(node.state)
-        for movie_id, person_id in neighbors:
-            if person_id == target:
-                path = []
-                while node.parent is not None:
-                    path.append((movie_id, person_id))
-                    node = node.parent
-                path.reverse()
-                return path
-            if not f.contains_state(person_id):
-                f.add(Node(person_id, node, movie_id))
 
-        
+        node = f.remove()
+        state = node.state
+
+        if state in visited:
+            continue
+        visited.add(state)
+        for movie, costar in neighbors_for_person(state):
+            if not f.contains_state(costar) and costar not in visited:
+                child = Node(state=costar, parent=node, action=movie)
+                if child.state == target:
+                    movies = []
+                    actors = []
+                    while child.parent is not None:
+                        movies.append(child.action)
+                        actors.append(child.state)
+                        child = child.parent
+                    movies.reverse()
+                    actors.reverse()
+                    return list(zip(movies, actors))
+                f.add(child)
 
 
 def person_id_for_name(name):
