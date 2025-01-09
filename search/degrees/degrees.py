@@ -97,7 +97,7 @@ def shortest_path(source, target):
         for movie_id, person_id in neighbors:
             if person_id == target:
                 path = []
-                while node.parent is not None:
+                while node is not None:
                     path.append((movie_id, person_id))
                     node = node.parent
                 path.reverse()
