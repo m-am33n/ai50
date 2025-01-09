@@ -73,13 +73,7 @@ def winner(board):
 
 
 def terminal(board):
-    for i in range(3):
-        for j in range(3):
-            if board[i][j] == EMPTY:
-                return False
-    if winner(board) is None:
-        return False
-    return True
+    return actions(board) == set()
 
 def utility(board):
     if winner(board) == X:
