@@ -109,7 +109,7 @@ def shortest_path(source, target):
                     node = node.parent
                 path.reverse()
                 return path
-            if not f.contains_state(person_id):
+            if not f.contains_state([movie_id, person_id]):
                 f.add(Node([movie_id, person_id], node, None))
 
 
