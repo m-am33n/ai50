@@ -62,7 +62,7 @@ def winner(board):
     for j in range(3):
         if board[0][j] == board[1][j] == board[2][j] and board[0][j] != EMPTY:
             return board[0][j]
-
+    
     if board[0][0] == board[1][1] == board[2][2] and board[0][0] != EMPTY:
         return board[0][0]
     
@@ -77,6 +77,8 @@ def terminal(board):
         for j in range(3):
             if board[i][j] == EMPTY:
                 return False
+    if winner(board) is None:
+        return False
     return True
 
 def utility(board):
