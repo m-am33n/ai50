@@ -88,7 +88,7 @@ def shortest_path(source, target):
     f = QueueFrontier()
     f.add(Node(source, None, None))
 
-    while True:
+    while not f.empty():
         if f.empty():
             return None
 
