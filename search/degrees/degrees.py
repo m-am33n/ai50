@@ -94,7 +94,7 @@ def shortest_path(source, target):
     f = QueueFrontier()
     f.add(Node(state=source, parent=None, action=None))
 
-    explored = set()
+    visited = set()
 
     if source == target:
         return []
@@ -106,11 +106,12 @@ def shortest_path(source, target):
         node = f.remove()
         state = node.state
 
-        if state in explored:
+        if state in visited:
             continue
-        explored.add(state)
-        for action, state in neighbors_for_person(state):
-            if not f.contains_state(state) and state not in explored:
+        visited.add(state)
+        neighbours = neighbors_for_person(state)
+        for action, state in neighbours:
+            if not f.contains_state(state) and state not in visited:
                 child = Node(state=state, parent=node, action=action)
                 if child.state == target:
                     actions = []
