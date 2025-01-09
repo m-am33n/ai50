@@ -86,9 +86,9 @@ def max_value(board):
     v = -math.inf
     max_value_action = None
     for action in actions(board):
-        min_value, min_action = min_value(result(board, action))
-        if min_value > v:
-            v = min_value
+        min_val, min_action = min_value(result(board, action))
+        if min_val > v:
+            v = min_val
             max_value_action = min_action
         
     return v, max_value_action
@@ -99,9 +99,9 @@ def min_value(board):
     v = math.inf
     min_value_action = None
     for action in actions(board):
-        max_value, max_action = max_value(result(board, action))
-        if max_value < v:
-            v = max_value
+        max_val, max_action = max_value(result(board, action))
+        if max_val < v:
+            v = max_val
             min_value_action = max_action
     return v, min_value_action
 
@@ -110,6 +110,8 @@ def minimax(board):
         return None
     
     if player(board) == X:
-        return max_value(board)
+        max_val, max_action = max_value(board)
+        return max_action
     else:
-        return min_value(board)
+        min_val, min_action = min_value(board)
+        return min_action
