@@ -92,25 +92,34 @@ def shortest_path(source, target):
     If no possible path, returns None.
     """
     f = QueueFrontier()
-    f.add(Node(source, None, None))
+    f.add(Node(state=source, parent=None, action=None))
 
-    if source == target:
-        return []
+    explored = set()
 
-    while not f.empty():
+    while True:
+        if f.empty():
+            return None
 
         node = f.remove()
-        neighbors = neighbors_for_person(node.state)
-        for movie_id, person_id in neighbors:
-            if person_id == target:
-                path = []
-                while node is not None:
-                    path.append(node.state)
-                    node = node.parent
-                path.reverse()
-                return path
-            if not f.contains_state((movie_id, person_id)):
-                f.add(Node((movie_id, person_id), node, None))
+        state = node.state
+
+        if state in explored:
+            continue
+        explored.add(state)
+        for action, state in neighbors_for_person(state):
+            if not f.contains_state(state) and state not in explored:
+                child = Node(state=state, parent=node, action=action)
+                if child.state == target:
+                    actions = []
+                    cells = []
+                    while child.parent is not None:
+                        actions.append(child.action)
+                        cells.append(child.state)
+                        child = child.parent
+                    actions.reverse()
+                    cells.reverse()
+                    return list(zip(actions, cells))
+                f.add(child)
 
 
 
