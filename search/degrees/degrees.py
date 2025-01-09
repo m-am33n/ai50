@@ -109,9 +109,9 @@ def shortest_path(source, target):
         if state in visited:
             continue
         visited.add(state)
-        for action, state in neighbors_for_person(state):
-            if not f.contains_state(state) and state not in visited:
-                child = Node(state=state, parent=node, action=action)
+        for movie, costar in neighbors_for_person(state):
+            if not f.contains_state(costar) and costar not in visited:
+                child = Node(state=costar, parent=node, action=movie)
                 if child.state == target:
                     actions = []
                     cells = []
