@@ -110,19 +110,19 @@ def shortest_path(source, target):
             continue
         visited.add(state)
         neighbours = neighbors_for_person(state)
-        for action, state in neighbours:
-            if not f.contains_state(state) and state not in visited:
-                child = Node(state=state, parent=node, action=action)
+        for movie, costar in neighbours:
+            if not f.contains_state(state) and costar not in visited:
+                child = Node(state=costar, parent=node, action=movie)
                 if child.state == target:
-                    actions = []
-                    cells = []
+                    movie_path = []
+                    actor_path = []
                     while child.parent is not None:
-                        actions.append(child.action)
-                        cells.append(child.state)
+                        movie_path.append(child.action)
+                        actor_path.append(child.state)
                         child = child.parent
-                    actions.reverse()
-                    cells.reverse()
-                    return list(zip(actions, cells))
+                    movie_path.reverse()
+                    actor_path.reverse()
+                    return list(zip(movie_path, actor_path))
                 f.add(child)
 
 
