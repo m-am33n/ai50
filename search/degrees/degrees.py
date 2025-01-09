@@ -85,15 +85,19 @@ def main():
 
 
 def shortest_path(source, target):
+    """
+    Returns the shortest list of (movie_id, person_id) pairs
+    that connect the source to the target.
+
+    If no possible path, returns None.
+    """
     f = QueueFrontier()
     f.add(Node(source, None, None))
 
     if source == target:
         return []
 
-    while True:
-        if f.empty():
-            return None
+    while not f.empty():
 
         node = f.remove()
         neighbors = neighbors_for_person(node.state)
@@ -101,7 +105,7 @@ def shortest_path(source, target):
             if person_id == target:
                 path = []
                 while node is not None:
-                    path.append((movie_id, person_id))
+                    path.append((node.action, node.state))
                     node = node.parent
                 path.reverse()
                 return path
