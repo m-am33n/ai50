@@ -60,7 +60,7 @@ def main():
 
 def shortest_path(source, target):
     frontier = Frontier()
-    print()
+
     """
     Returns the shortest list of (movie_id, person_id) pairs
     that connect the source to the target.
