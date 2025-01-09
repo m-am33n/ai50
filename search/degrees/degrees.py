@@ -94,7 +94,7 @@ def shortest_path(source, target):
     f = QueueFrontier()
     f.add(Node(state=source, parent=None, action=None))
 
-   visited = set()
+    visited = set()
 
     if source == target:
         return []
