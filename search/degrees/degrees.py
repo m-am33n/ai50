@@ -96,6 +96,9 @@ def shortest_path(source, target):
 
     explored = set()
 
+    if source == target:
+        return []
+
     while True:
         if f.empty():
             return None
