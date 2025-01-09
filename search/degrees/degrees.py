@@ -91,9 +91,27 @@ def shortest_path(source, target):
 
     If no possible path, returns None.
     """
+    f = QueueFrontier()
+    f.add(Node(source, None, None))
+    
+    while True:
+        if f.empty():
+            return None
+        
+        node = f.remove()
+        neighbors = neighbors_for_person(node.state)
+        for movie_id, person_id in neighbors:
+            if person_id == target:
+                path = []
+                while node.parent is not None:
+                    path.append((movie_id, person_id))
+                    node = node.parent
+                path.reverse()
+                return path
+            if not f.contains_state(person_id):
+                f.add(Node(person_id, node, movie_id))
 
-    # TODO
-    raise NotImplementedError
+        
 
 
 def person_id_for_name(name):
