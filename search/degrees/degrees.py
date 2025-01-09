@@ -113,15 +113,15 @@ def shortest_path(source, target):
             if not f.contains_state(costar) and costar not in visited:
                 child = Node(state=costar, parent=node, action=movie)
                 if child.state == target:
-                    actions = []
-                    cells = []
+                    movies = []
+                    actors = []
                     while child.parent is not None:
-                        actions.append(child.action)
-                        cells.append(child.state)
+                        movies.append(child.action)
+                        actors.append(child.state)
                         child = child.parent
-                    actions.reverse()
-                    cells.reverse()
-                    return list(zip(actions, cells))
+                    movies.reverse()
+                    actors.reverse()
+                    return list(zip(movies, actors))
                 f.add(child)
 
 
