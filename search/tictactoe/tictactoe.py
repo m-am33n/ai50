@@ -34,11 +34,11 @@ def player(board):
 
 
 def actions(board):
-    possible_actions = []
+    possible_actions = set()
     for i in range(3):
         for j in range(3):
             if board[i][j] == EMPTY:
-                possible_actions.append((i, j))
+                possible_actions.add((i, j))
     return possible_actions
 
 
