@@ -56,12 +56,18 @@ def result(board, action):
 
 def winner(board):
     for row in board:
-        if row[0] == row[1] == row[2]:
+        if row[0] == row[1] == row[2] and row[0] != EMPTY:
             return row[0]
         
     for j in range(3):
-        if board[0][j] == board[1][j] == board[2][j]:
+        if board[0][j] == board[1][j] == board[2][j] and board[0][j] != EMPTY:
             return board[0][j]
+
+    if board[0][0] == board[1][1] == board[2][2] and board[0][0] != EMPTY:
+        return board[0][0]
+    
+    if board[0][2] == board[1][1] == board[2][0] and board[0][2] != EMPTY:
+        return board[0][2]
     return None
     
 
