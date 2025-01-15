@@ -157,23 +157,7 @@ class MinesweeperAI():
 
         # List of sentences about the game known to be true
         self.knowledge = []
-    def surrounding_cells(self, cell):
-        surrounding = set()
-        # Loop over all cells within one row and column
-        for i in range(cell[0] - 1, cell[0] + 2):
-            for j in range(cell[1] - 1, cell[1] + 2):
 
-                # Ignore the cell itself
-                if (i, j) == cell:
-                    continue
-
-                if 0 <= i < self.height and 0 <= j < self.width:
-                    if (i, j) not in self.moves_made and (i, j) not in self.mines:
-                        surrounding.add((i, j))
-                    # when excluding a known mine cell, decrease the count by 1
-                    elif (i, j) in self.mines:
-                        count -= 1
-        return surrounding
     def mark_mine(self, cell):
         """
         Marks a cell as a mine, and updates all knowledge
@@ -210,7 +194,23 @@ class MinesweeperAI():
         self.moves_made.add(cell)
         self.mark_safe(cell)
         
-        self.knowledge.append(Sentence(self.surrounding_cells(cell), count))
+        surrounding = set()
+        # Loop over all cells within one row and column
+        for i in range(cell[0] - 1, cell[0] + 2):
+            for j in range(cell[1] - 1, cell[1] + 2):
+
+                # Ignore the cell itself
+                if (i, j) == cell:
+                    continue
+
+                if 0 <= i < self.height and 0 <= j < self.width:
+                    if (i, j) not in self.moves_made and (i, j) not in self.mines:
+                        surrounding.add((i, j))
+                    # when excluding a known mine cell, decrease the count by 1
+                    elif (i, j) in self.mines:
+                        count -= 1
+
+        self.knowledge.append(Sentence(surrounding, count))
 
         for sentence in self.knowledge:
             safes = sentence.known_safes()
