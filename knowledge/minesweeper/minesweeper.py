@@ -210,7 +210,7 @@ class MinesweeperAI():
         self.moves_made.add(cell)
         self.mark_safe(cell)
         
-        self.knowledge.append[Sentence(self.surrounding_cells(cell), count)]
+        self.knowledge.append(Sentence(self.surrounding_cells(cell), count))
 
         for sentence in self.knowledge:
             safes = sentence.known_safes()
