@@ -159,7 +159,7 @@ def iterate_pagerank(corpus, damping_factor):
     while True:
         previous_page_ranks = page_ranks.copy()
         for page in corpus:
-            page_ranks[page] = (1-damping_factor) / len(corpus) + damping_factor * sum_page_ranks(corpus, page_ranks)
+            page_ranks[page] = (1-damping_factor) / len(corpus) + damping_factor * sum_page_ranks(page, corpus, page_ranks)
 
         converged = True
         for page in page_ranks:
@@ -169,7 +169,7 @@ def iterate_pagerank(corpus, damping_factor):
         if converged:
             break
 
-def sum_page_ranks(corpus, page_ranks):
+def sum_page_ranks(page, corpus, page_ranks):
     pages_linked_to = find_pages_linked_to(page, corpus)
     required_sum = 0
     for page in pages_linked_to:
