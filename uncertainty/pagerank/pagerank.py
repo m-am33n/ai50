@@ -57,10 +57,42 @@ def transition_model(corpus, page, damping_factor):
     linked to by `page`. With probability `1 - damping_factor`, choose
     a link at random chosen from all pages in the corpus.
     """
-    if random.random() < damping_factor:
-        return random.choice(corpus[page])
-    else:
-        return random.choice(list(corpus.keys()))
+    linked_pages = corpus[page]
+    prob_dist = dict()
+    for page in linked_pages:
+        prob_dist[page] = damping_factor / len(linked_pages)
+    
+    all_pages = set(corpus.keys())
+    
+    remaining_prob = 1
+    if len(linked_pages) != 0:
+        remaining_prob = 1 - damping_factor
+    prob_to_distribute = remaining_prob / len(all_pages)
+    
+    # First distribute probabilities without rounding
+    for page in all_pages:
+        if page in prob_dist:
+            prob_dist[page] += prob_to_distribute
+        else:
+            prob_dist[page] = prob_to_distribute
+
+    # Ensure the sum is exactly 1 by adjusting the last value
+    total = sum(prob_dist.values())
+    if total != 1:
+        last_page = list(prob_dist.keys())[-1]
+        prob_dist[last_page] += (1 - total)
+    
+    # Round all probabilities to 5 decimal places
+    for page in prob_dist:
+        prob_dist[page] = round(prob_dist[page], 5)
+    
+    # Final adjustment if needed after rounding
+    total = sum(prob_dist.values())
+    if total != 1:
+        last_page = list(prob_dist.keys())[-1]
+        prob_dist[last_page] += round(1 - total, 5)
+
+    return prob_dist
 
 
 
