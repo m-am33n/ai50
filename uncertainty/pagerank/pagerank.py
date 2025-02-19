@@ -130,12 +130,16 @@ def sample_pagerank(corpus, damping_factor, n):
 
 def sample(corpus, damping_factor, page):
     prob_dist = transition_model(corpus, page, damping_factor)
-
+    pages = list(corpus.keys())
+    
     random_factor = random.random()
     if random_factor < damping_factor:
-        return random.choices(list(corpus.keys()), weights=prob_dist)[0]
+        # Use the probability distribution from transition_model
+        return random.choices(pages, weights=[prob_dist[p] for p in pages])[0]
     else:
-        return random.choice(list(corpus.keys()))
+        # Equal probability for all pages when not using damping factor
+        return random.choice(pages)
+
 
 def iterate_pagerank(corpus, damping_factor):
     """
