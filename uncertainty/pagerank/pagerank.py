@@ -169,6 +169,7 @@ def iterate_pagerank(corpus, damping_factor):
         if converged:
             break
 
+    return page_ranks
 def sum_page_ranks(page, corpus, page_ranks):
     pages_linked_to = find_pages_linked_to(page, corpus)
     required_sum = 0
