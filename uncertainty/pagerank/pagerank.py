@@ -150,12 +150,14 @@ def iterate_pagerank(corpus, damping_factor):
     their estimated PageRank value (a value between 0 and 1). All
     PageRank values should sum to 1.
     """
-
     page_ranks = dict()
+
+    for page in corpus:
+        if len(corpus[page]) == 0:
+            corpus[page] = list(corpus.keys())
     for page in corpus:
         page_ranks[page] = 1 / len(corpus)
-    
-    page = random.choice(list(corpus.keys()))
+
     while True:
         previous_page_ranks = page_ranks.copy()
         for page in corpus:
@@ -170,13 +172,12 @@ def iterate_pagerank(corpus, damping_factor):
             break
 
     return page_ranks
+
 def sum_page_ranks(page, corpus, page_ranks):
     pages_linked_to = find_pages_linked_to(page, corpus)
     required_sum = 0
     for page in pages_linked_to:
         links_on_page = corpus[page]
-        if len(links_on_page) == 0:
-            links_on_page = corpus.keys()
         required_sum += page_ranks[page]/len(links_on_page)
     return required_sum
 
