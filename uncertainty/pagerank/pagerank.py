@@ -105,8 +105,37 @@ def sample_pagerank(corpus, damping_factor, n):
     their estimated PageRank value (a value between 0 and 1). All
     PageRank values should sum to 1.
     """
-    raise NotImplementedError
 
+    page = random.choice(list(corpus.keys()))
+    occurences = dict()
+    occurences[page] = 1
+    for i in range(n):
+        page = sample(corpus, damping_factor, page)
+        if page in occurences:
+            occurences[page] += 1
+        else:
+            occurences[page] = 1
+
+    page_ranks = dict()
+    for page in occurences:
+        page_ranks[page] = occurences[page] / n
+
+    # Final adjustment if needed after rounding
+    total = sum(page_ranks.values())
+    if total != 1:
+        last_page = list(page_ranks.keys())[-1]
+        page_ranks[last_page] += round(1 - total, 5)
+    return page_ranks
+
+
+def sample(corpus, damping_factor, page):
+    prob_dist = transition_model(corpus, page, damping_factor)
+
+    random_factor = random.random()
+    if random_factor < damping_factor:
+        return random.choices(list(corpus.keys()), weights=prob_dist)[0]
+    else:
+        return random.choice(list(corpus.keys()))
 
 def iterate_pagerank(corpus, damping_factor):
     """
@@ -117,7 +146,19 @@ def iterate_pagerank(corpus, damping_factor):
     their estimated PageRank value (a value between 0 and 1). All
     PageRank values should sum to 1.
     """
-    raise NotImplementedError
+
+    """
+    page_ranks = dict()
+    for page in corpus.keys():
+        page_ranks[page] = 1 / len(corpus.keys())
+
+    page = random.choice(list(corpus.keys()))
+
+    for i in range(n):
+        pagerank = (1 - damping_factor) / len(corpus.keys()) + damping_factor
+    """
+
+
 
 
 if __name__ == "__main__":
