@@ -185,11 +185,15 @@ def getTraitProbabilityForChild(people, person, one_gene, two_genes, have_trait,
     prob_gene = 1
     if mother in zero_gene:
         mother_inherited_gene = PROBS["mutation"]
+    elif mother in one_gene:
+        mother_inherited_gene = 0.5
     else:
         mother_inherited_gene = 1 - PROBS["mutation"]
         
     if father in zero_gene:
         father_inherited_gene = PROBS["mutation"]
+    elif father in one_gene:
+        father_inherited_gene = 0.5
     else:
         father_inherited_gene = 1 - PROBS["mutation"]
 
