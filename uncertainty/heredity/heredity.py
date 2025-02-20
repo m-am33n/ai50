@@ -147,15 +147,18 @@ def joint_probability(people, one_gene, two_genes, have_trait):
             zero_gene.append(person)
         if person not in have_trait:
             dont_have_trait.append(person)
-    
+
     total_prob = 1
     for person in people:
         if people[person]["mother"] is None and people[person]["father"] is None:
-            total_prob *= getTraitProbabilityForNonChild(people, person, one_gene, two_genes, have_trait, zero_gene)
+            total_prob *= getTraitProbabilityForNonChild(people,
+                                                         person, one_gene, two_genes, have_trait, zero_gene)
         else:
-            total_prob *= getTraitProbabilityForChild(people, person, one_gene, two_genes, have_trait, zero_gene)
-    
+            total_prob *= getTraitProbabilityForChild(people,
+                                                      person, one_gene, two_genes, have_trait, zero_gene)
+
     return total_prob
+
 
 def getTraitProbabilityForNonChild(people, person, one_gene, two_genes, have_trait, zero_gene):
     prob_gene = 1
@@ -169,7 +172,7 @@ def getTraitProbabilityForNonChild(people, person, one_gene, two_genes, have_tra
     if person in two_genes:
         prob_gene = PROBS["gene"][2]
         num_genes = 2
-    
+
     prob_trait = 1
     if person in have_trait:
         prob_trait = PROBS["trait"][num_genes][True]
@@ -177,6 +180,7 @@ def getTraitProbabilityForNonChild(people, person, one_gene, two_genes, have_tra
         prob_trait = PROBS["trait"][num_genes][False]
 
     return prob_gene * prob_trait
+
 
 def getTraitProbabilityForChild(people, person, one_gene, two_genes, have_trait, zero_gene):
     mother = people[person]["mother"]
@@ -189,7 +193,7 @@ def getTraitProbabilityForChild(people, person, one_gene, two_genes, have_trait,
         mother_inherited_gene = 0.5
     else:
         mother_inherited_gene = 1 - PROBS["mutation"]
-        
+
     if father in zero_gene:
         father_inherited_gene = PROBS["mutation"]
     elif father in one_gene:
@@ -199,18 +203,20 @@ def getTraitProbabilityForChild(people, person, one_gene, two_genes, have_trait,
 
     if person in zero_gene:
         num_genes = 0
-        prob_gene = (1- mother_inherited_gene) * (1- father_inherited_gene)
+        prob_gene = (1 - mother_inherited_gene) * (1 - father_inherited_gene)
     if person in one_gene:
         num_genes = 1
-        prob_gene = mother_inherited_gene * (1- father_inherited_gene) + father_inherited_gene * (1- mother_inherited_gene)
+        prob_gene = mother_inherited_gene * \
+            (1 - father_inherited_gene) + father_inherited_gene * (1 - mother_inherited_gene)
     if person in two_genes:
         num_genes = 2
         prob_gene = mother_inherited_gene * father_inherited_gene
-        
+
     want_trait = person in have_trait
     prob_trait = PROBS["trait"][num_genes][want_trait]
-            
+
     return prob_gene * prob_trait
+
 
 def update(probabilities, one_gene, two_genes, have_trait, p):
     """
@@ -227,9 +233,10 @@ def update(probabilities, one_gene, two_genes, have_trait, p):
             probabilities[person]["gene"][1] += p
         else:
             probabilities[person]["gene"][0] += p
-            
+
         # Update trait probabilities
         probabilities[person]["trait"][person in have_trait] += p
+
 
 def normalize(probabilities):
     """
@@ -249,13 +256,12 @@ def normalize(probabilities):
     if total_gene_probability != 1:
         last_gene = list(probabilities[person]["gene"].keys())[-1]
         probabilities[person]["gene"][last_gene] += round(1 - total_gene_probability, 5)
-        
+
     total_trait_probability = sum(probabilities[person]["trait"].values())
     if total_trait_probability != 1:
         last_trait = list(probabilities[person]["trait"].keys())[-1]
         probabilities[person]["trait"][last_trait] += round(1 - total_trait_probability, 5)
-        
-    
+
 
 if __name__ == "__main__":
     main()
