@@ -175,9 +175,6 @@ class CrosswordCreator():
 
         for var1 in self.crossword.variables:
             for var2 in self.crossword.neighbors(var1):
-                if var1 not in assignment or var2 not in assignment:
-                    return False
-                
                 overlap = self.crossword.overlaps[var1, var2]
                 if overlap is not None:
                     if assignment[var1][overlap[0]] != assignment[var2][overlap[1]]:
