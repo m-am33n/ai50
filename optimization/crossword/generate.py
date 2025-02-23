@@ -100,8 +100,7 @@ class CrosswordCreator():
          constraints; in this case, the length of the word.)
         """
         for var in self.domains:
-            self.domains[var] = [word for word in self.domains[var] if len(word) == var.length]
-
+            self.domains[var] = set([word for word in self.domains[var] if len(word) == var.length])
     def revise(self, x, y):
         """
         Make variable `x` arc consistent with variable `y`.
@@ -111,19 +110,20 @@ class CrosswordCreator():
         Return True if a revision was made to the domain of `x`; return
         False if no revision was made.
         """
-        if y not in self.crossword.neighbors(x):
-            return False
         revised = False
 
         overlaps = self.crossword.overlaps[x, y]
-        if len(overlaps) == 0:
-            return False
-        for xword in self.domains[x]:
-            for yword in self.domains[y]:
-                if xword[overlaps[0]] != yword[overlaps[1]]:
-                    if xword in self.domains[x]:
-                        self.domains[x].remove(xword)
-                        revised = True
+
+        xdomains = list(self.domains[x].copy())
+        ydomains = list(self.domains[y].copy())
+        for xword in xdomains:
+            for yword in ydomains:
+                found_constraint_satisfied = False
+                if xword[overlaps[0]] == yword[overlaps[1]]:
+                    found_constraint_satisfied = True
+            if not found_constraint_satisfied:
+                self.domains[x].remove(xword)
+                revised = True
 
         return revised
 
