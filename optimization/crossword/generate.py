@@ -113,14 +113,18 @@ class CrosswordCreator():
         revised = False
 
         overlaps = self.crossword.overlaps[x, y]
+        if overlaps is None:
+            return False
 
         xdomains = list(self.domains[x].copy())
-        ydomains = list(self.domains[y].copy())
         for xword in xdomains:
-            for yword in ydomains:
-                found_constraint_satisfied = False
+            found_constraint_satisfied = False
+            for yword in self.domains[y]:
+                if xword == yword:
+                    continue
                 if xword[overlaps[0]] == yword[overlaps[1]]:
                     found_constraint_satisfied = True
+                    break
             if not found_constraint_satisfied:
                 self.domains[x].remove(xword)
                 revised = True
