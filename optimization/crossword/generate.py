@@ -200,7 +200,7 @@ class CrosswordCreator():
                         overlap = self.crossword.overlaps[var, neighbor]
                         if word[overlap[0]] != neighbor_word[overlap[1]]:
                             count_overruled += 1
-        word_count_overruled_neighbors[word] = count_overruled
+            word_count_overruled_neighbors[word] = count_overruled
         ordered = sorted(word_count_overruled_neighbors, key=word_count_overruled_neighbors.get)
         return ordered
 
