@@ -21,20 +21,20 @@ months = {
     "Dec": 11
 }
 
-visitor_types = {
-    "New_Visitor": 0,
-    "Returning_Visitor": 1
-}
+def visitor_type(v):
+    if v == "Returning_Visitor":
+        return 1
+    return 0
 
-weekends = {
-    "FALSE": 0,
-    "TRUE": 1
-}
+def weekend(w):
+    if w == "TRUE":
+        return 1
+    return 0
 
-revenue = {
-    "FALSE": 0,
-    "TRUE": 1
-}
+def revenue(r):
+    if r == "TRUE":
+        return 1
+    return 0
 
 def main():
 
@@ -97,9 +97,9 @@ def load_data(filename):
             int(row['Informational']), float(row['Informational_Duration']), int(row['ProductRelated']),
             float(row['ProductRelated_Duration']), float(row['BounceRates']), float(row['ExitRates']), 
             float(row['PageValues']), float(row['SpecialDay']), months[row['Month']], int(row['OperatingSystems']), 
-            int(row['Browser']), int(row['Region']), int(row['TrafficType']), visitor_types[row['VisitorType']], weekends[row['Weekend']]])
+            int(row['Browser']), int(row['Region']), int(row['TrafficType']), visitor_type(row['VisitorType']), weekends(row['Weekend'])])
 
-            labels.append(revenue[row['Revenue']])
+            labels.append(revenue(row['Revenue']))
     return (evidence, labels)
 
 
