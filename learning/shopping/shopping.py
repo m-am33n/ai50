@@ -97,7 +97,7 @@ def load_data(filename):
             int(row['Informational']), float(row['Informational_Duration']), int(row['ProductRelated']),
             float(row['ProductRelated_Duration']), float(row['BounceRates']), float(row['ExitRates']), 
             float(row['PageValues']), float(row['SpecialDay']), months[row['Month']], int(row['OperatingSystems']), 
-            int(row['Browser']), int(row['Region']), int(row['TrafficType']), visitor_type(row['VisitorType']), weekends(row['Weekend'])])
+            int(row['Browser']), int(row['Region']), int(row['TrafficType']), visitor_type(row['VisitorType']), weekend(row['Weekend'])])
 
             labels.append(revenue(row['Revenue']))
     return (evidence, labels)
