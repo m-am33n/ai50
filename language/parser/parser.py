@@ -81,8 +81,8 @@ def np_chunk(tree):
     for subtree in tree.subtrees():
         if subtree.label() == "NP":
             found_np = False
-            for subsubtree in list(subtree)[0:]:
-                if isinstance(subsubtree, nltk.Tree) and subsubtree.label() == "NP":
+            for subsubtree in subtree.subtrees(lambda t: t != subtree):
+                if subsubtree.label() == "NP":
                     found_np = True
                     break
             if not found_np:
