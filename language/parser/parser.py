@@ -80,7 +80,12 @@ def np_chunk(tree):
     np_chunks = []
     for subtree in tree.subtrees():
         if subtree.label() == "NP":
-            if all(subtree.subtrees(lambda t: t.label() != "NP")):
+            found_np = False
+            for subsubtree in list(subtree)[1:]:
+                if isinstance(subsubtree, nltk.Tree) and subsubtree.label() == "NP":
+                    found_np = True
+                    break
+            if not found_np:
                 np_chunks.append(subtree)
     return np_chunks
 
